@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru" class="no-js">
+<html lang="ru" dir="ltr" data-lang="ru" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -9,6 +9,8 @@
 <link rel="alternate" hreflang="pl" href="https://altercast.agency/">
 <link rel="alternate" hreflang="en" href="https://altercast.agency/en/">
 <link rel="alternate" hreflang="ru" href="https://altercast.agency/ru/">
+<link rel="alternate" hreflang="zh-Hans" href="https://altercast.agency/zh/">
+<link rel="alternate" hreflang="ar" href="https://altercast.agency/ar/">
 <link rel="alternate" hreflang="x-default" href="https://altercast.agency/en/">
 <meta name="theme-color" content="#0f0d0c">
 <meta property="og:type" content="website">
@@ -25,7 +27,7 @@
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 <link rel="preload" href="../assets/fonts/playfair-display-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=20261015c">
+<link rel="stylesheet" href="../assets/style.css?v=20261016a">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"AlterCast Agency","url":"https://altercast.agency/","email":"contact@altercast.agency","legalName":"APTIV sp. z o.o.","address":{"@type":"PostalAddress","streetAddress":"ul. Władysława IV 43","postalCode":"81-395","addressLocality":"Gdynia","addressCountry":"PL"}}</script>
 </head>
 <body>
@@ -36,7 +38,7 @@
     <a class="brand" href="./" aria-label="AlterCast Agency"><svg viewBox="0 0 1104 205" role="img" aria-label="AlterCast"><use href="#ac-logo"/></svg><span class="brand-tag">Agency</span></a>
     <nav class="nav" aria-label="Main"><a href="#dlya-kogo">Для кого</a><a href="#altercast">AlterCast</a><a href="#vyplaty">Выплаты</a><a href="#kak-eto-rabotaet">Как это работает</a><a href="#faq">Вопросы</a></nav>
     <div class="header-actions">
-      <nav class="lang" aria-label="Язык страницы"><a href="../" hreflang="pl" lang="pl">PL</a><a href="../en/" hreflang="en" lang="en">EN</a><a href="./" hreflang="ru" lang="ru" aria-current="true">RU</a></nav>
+      <details class="lang-menu"><summary aria-label="Язык страницы: Русский"><svg class="lm-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span lang="ru">RU</span><svg class="lm-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><nav class="lang-list" aria-label="Язык страницы"><a href="../" hreflang="pl" lang="pl"><span>Polski</span><span class="lc">PL</span></a><a href="../en/" hreflang="en" lang="en"><span>English</span><span class="lc">EN</span></a><a href="./" hreflang="ru" lang="ru" aria-current="true"><span>Русский</span><span class="lc">RU</span></a><a href="../zh/" hreflang="zh-Hans" lang="zh-Hans"><span>简体中文</span><span class="lc">ZH</span></a><a href="../ar/" hreflang="ar" lang="ar"><span>العربية</span><span class="lc">AR</span></a></nav></details>
       <a class="btn btn-sm" href="../ru/anketa/">Подать заявку</a>
     </div>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-panel" aria-label="Меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button>
@@ -59,7 +61,7 @@
       <a class="btn" href="../ru/anketa/">Заполнить анкету <span class="arr" aria-hidden="true">→</span></a>
       <a class="btn btn-ghost" href="#kak-eto-rabotaet">Как это работает</a>
     </div>
-    <p class="hero-note">Около 15 минут · анкета также на <a href="../formularz/">польском</a> и <a href="../en/form/">английском</a></p>
+    <p class="hero-note">Около 15 минут · анкета доступна на <a href="#apply">5 языках</a></p>
     <div class="audience-pills"><a href="#dlya-kogo">Инфлюенсеры и блогеры</a><a href="#dlya-kogo">Модели</a><a href="#vyplaty">Страны без выплат Stripe</a></div>
   </div>
 </section>
@@ -216,7 +218,7 @@
   <div class="wrap">
     <h2 class="h2 reveal" id="final-title">Пора вашему лицу <em>начать зарабатывать</em></h2>
     <p class="lead reveal">Выберите язык анкеты. Заполнение займёт около 15 минут.</p>
-    <div class="form-langs reveal"><a class="form-lang" href="../formularz/" lang="pl"><span class="fl-code">PL</span><span class="fl-name">Polski</span><span class="fl-go">Wypełnij formularz <span class="arr" aria-hidden="true">→</span></span></a><a class="form-lang" href="../en/form/" lang="en"><span class="fl-code">EN</span><span class="fl-name">English</span><span class="fl-go">Fill in the form <span class="arr" aria-hidden="true">→</span></span></a><a class="form-lang current" href="../ru/anketa/" lang="ru"><span class="fl-code">RU</span><span class="fl-name">Русский</span><span class="fl-go">Заполнить анкету <span class="arr" aria-hidden="true">→</span></span></a></div>
+    <div class="form-langs reveal"><a class="form-lang" href="../formularz/" lang="pl"><span class="fl-code">PL</span><span class="fl-name">Polski</span><span class="fl-go">Wypełnij formularz <span class="arr" aria-hidden="true">→</span></span></a><a class="form-lang" href="../en/form/" lang="en"><span class="fl-code">EN</span><span class="fl-name">English</span><span class="fl-go">Fill in the form <span class="arr" aria-hidden="true">→</span></span></a><a class="form-lang current" href="../ru/anketa/" lang="ru"><span class="fl-code">RU</span><span class="fl-name">Русский</span><span class="fl-go">Заполнить анкету <span class="arr" aria-hidden="true">→</span></span></a><a class="form-lang" href="../zh/form/" lang="zh-Hans"><span class="fl-code">ZH</span><span class="fl-name">简体中文</span><span class="fl-go">填写申请表 <span class="arr" aria-hidden="true">→</span></span></a><a class="form-lang" href="../ar/form/" lang="ar"><span class="fl-code">AR</span><span class="fl-name">العربية</span><span class="fl-go">املأ الاستمارة <span class="arr" aria-hidden="true">→</span></span></a></div>
     <p class="final-contact">Есть вопросы? Пишите: <a href="mailto:contact@altercast.agency">contact@altercast.agency</a></p>
   </div>
 </section>
@@ -238,7 +240,7 @@
         <div class="foot-links">
           <a href="mailto:contact@altercast.agency">contact@altercast.agency</a>
           <a href="https://altercast.ai/" target="_blank" rel="noopener">altercast.ai ↗</a>
-          <a href="../" lang="pl">Polski</a><a href="../en/" lang="en">English</a>
+          <a href="../" lang="pl">Polski</a><a href="../en/" lang="en">English</a><a href="../zh/" lang="zh-Hans">简体中文</a><a href="../ar/" lang="ar">العربية</a>
         </div>
       </div>
     </div>
@@ -249,7 +251,7 @@
     </div>
   </div>
 </footer>
-<div class="lang-suggest" role="region" aria-label="Язык страницы"><span data-lang="pl" lang="pl">Ta strona jest dostępna po polsku. <a href="../" hreflang="pl">Wersja polska</a></span><span data-lang="en" lang="en">This page is also available in English. <a href="../en/" hreflang="en">Switch to English</a></span><button type="button" aria-label="Закрыть">×</button></div>
-<script src="../assets/app.js?v=20261015c" defer></script>
+<div class="lang-suggest" role="region" aria-label="Язык страницы"><span data-lang="pl" lang="pl" dir="ltr">Ta strona jest dostępna po polsku. <a href="../" hreflang="pl">Wersja polska</a></span><span data-lang="en" lang="en" dir="ltr">This page is also available in English. <a href="../en/" hreflang="en">Switch to English</a></span><span data-lang="zh" lang="zh-Hans" dir="ltr">本页面提供简体中文版本。 <a href="../zh/" hreflang="zh-Hans">切换到中文</a></span><span data-lang="ar" lang="ar" dir="rtl">هذه الصفحة متاحة باللغة العربية. <a href="../ar/" hreflang="ar">التبديل إلى العربية</a></span><button type="button" aria-label="Закрыть">×</button></div>
+<script src="../assets/app.js?v=20261016a" defer></script>
 </body>
 </html>
