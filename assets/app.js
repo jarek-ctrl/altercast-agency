@@ -43,6 +43,20 @@
     });
   }
 
+  /* Language menu: close on outside click, Esc, or after choosing */
+  var menus = Array.prototype.slice.call(document.querySelectorAll('.lang-menu'));
+  if (menus.length) {
+    document.addEventListener('click', function (e) {
+      menus.forEach(function (m) { if (m.open && !m.contains(e.target)) m.open = false; });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      menus.forEach(function (m) {
+        if (m.open) { m.open = false; var s = m.querySelector('summary'); if (s) s.focus(); }
+      });
+    });
+  }
+
   /* Reveal on scroll */
   var items = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -70,11 +84,11 @@
   /* Language suggestion (no redirect; just a small, dismissible hint) */
   var bar = document.querySelector('.lang-suggest');
   if (bar) {
-    var pageLang = doc.getAttribute('lang') || 'pl';
+    var pageLang = doc.getAttribute('data-lang') || doc.getAttribute('lang') || 'pl';
     var dismissed = false;
     try { dismissed = sessionStorage.getItem('ac-lang-hint') === '1'; } catch (e) {}
     var prefs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']).map(function (l) { return String(l).toLowerCase().slice(0, 2); });
-    var map = { pl: 'pl', en: 'en', ru: 'ru', be: 'ru', kk: 'ru', ky: 'ru', uz: 'ru', tg: 'ru', hy: 'ru', az: 'ru', ka: 'ru', uk: 'en' };
+    var map = { pl: 'pl', en: 'en', ru: 'ru', be: 'ru', kk: 'ru', ky: 'ru', uz: 'ru', tg: 'ru', hy: 'ru', az: 'ru', ka: 'ru', uk: 'en', zh: 'zh', ar: 'ar' };
     var target = null;
     for (var i = 0; i < prefs.length; i++) {
       if (map[prefs[i]]) { target = map[prefs[i]]; break; }

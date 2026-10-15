@@ -1,6 +1,37 @@
 /* AlterCast Agency — on-site onboarding form.
    Answers are keyed by the exact Google Forms question title (data-title) so the backend can
    write them into the matching column of the response sheet. */
+
+/* Onboarding videos: nothing is loaded from Vimeo until the visitor presses play.
+   Then the poster button is swapped for the player (same parameters as on altercast.ai);
+   starting another video puts the previous one back to its poster, which stops it. */
+(function () {
+  var active = null;
+  function restore(slot) {
+    if (!slot || !slot._btn) return;
+    slot.innerHTML = '';
+    slot.appendChild(slot._btn);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.vp-btn[data-vimeo]'), function (btn) {
+    btn.addEventListener('click', function () {
+      var slot = btn.parentNode;
+      if (active && active !== slot) restore(active);
+      var p = new URLSearchParams({ autoplay: '1', title: '0', byline: '0', portrait: '0', dnt: '1', playsinline: '1', vimeo_logo: '0' });
+      var h = btn.getAttribute('data-h');
+      if (h) p.set('h', h);
+      var f = document.createElement('iframe');
+      f.src = 'https://player.vimeo.com/video/' + btn.getAttribute('data-vimeo') + '?' + p.toString();
+      f.title = btn.getAttribute('data-title') || 'Vimeo';
+      f.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write';
+      f.allowFullscreen = true;
+      f.referrerPolicy = 'strict-origin-when-cross-origin';
+      slot._btn = btn;
+      slot.replaceChild(f, btn);
+      active = slot;
+    });
+  });
+})();
+
 (function () {
   var cfg = window.AC_FORM || {};
   var ui = cfg.ui || {};
@@ -20,6 +51,8 @@
   var photos = {};               // data-title -> {name, type, data}
   var DRAFT_KEY = 'acForm:' + cfg.lang;
 
+  // Chinese / Arabic forms: fields marked data-latin must not contain Han or Arabic script (or full-width forms)
+  var NON_LATIN = /[\u0600-\u06FF\u0750-\u077F\u0870-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF\u2E80-\u2FDF\u3000-\u303F\u3040-\u30FF\u3100-\u31BF\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF\uFF00-\uFFEF]/;
   function $all(sel, root) { return Array.prototype.slice.call((root || form).querySelectorAll(sel)); }
   // hidden by a condition (e.g. company fields for private persons), regardless of which step is open
   function condHidden(el) { var c = el.closest('[data-show-if]'); return !!(c && c.hidden); }
@@ -85,6 +118,7 @@
       var conditionalReq = !!field.closest('[data-show-if="photo-link"]') || field.getAttribute('data-show-if') === 'photo-link';
       if ((req || conditionalReq) && !v) msg = conditionalReq && !req ? ui.link_required : ui.required;
       else if (v && inp.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) msg = ui.invalid_email;
+      else if (v && field.hasAttribute('data-latin') && NON_LATIN.test(v)) msg = ui.latin_only;
     }
     setError(field, msg);
     return !msg;

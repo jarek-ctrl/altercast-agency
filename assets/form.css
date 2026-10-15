@@ -7,18 +7,43 @@
 .form-h1 em{color:var(--amber)}
 .form-hero .lead{color:var(--night-text);margin-top:18px;max-width:62ch}
 .form-about{margin-top:22px;max-width:760px;border:1px solid var(--night-line);border-radius:var(--radius-sm);background:var(--night-2);font-size:14.5px;color:var(--night-text)}
-.form-about summary{cursor:pointer;padding:12px 16px;list-style:none;position:relative;padding-right:40px}
+.form-about summary{cursor:pointer;padding:12px 16px;list-style:none;position:relative;padding-inline-end:40px}
 .form-about summary::-webkit-details-marker{display:none}
-.form-about summary::after{content:"+";position:absolute;right:16px;top:9px;font-size:20px;color:var(--amber)}
+.form-about summary::after{content:"+";position:absolute;inset-inline-end:16px;top:9px;font-size:20px;color:var(--amber)}
 .form-about[open] summary::after{content:"–"}
 .form-about p{padding:0 16px 14px;margin:0;color:#a99f94}
-.videos-label{margin:26px 0 10px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#a99f94}
+.videos-label{margin:30px 0 12px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#a99f94}
+.videos-note{color:#7d746b}
+/* video link cards (used while the players are switched off in build_form.py) */
 .video-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:900px}
 @media (max-width:760px){.video-cards{grid-template-columns:1fr}}
 .video-card{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--night-line);background:var(--night-2);color:#fff;text-decoration:none;font-size:14.5px;line-height:1.35;transition:border-color .15s}
 .video-card:hover{border-color:var(--amber)}
 .vc-play{flex-shrink:0;width:34px;height:34px;border-radius:50%;background:var(--amber);color:var(--ink);display:grid;place-items:center}
-.vc-play svg{width:16px;height:16px;margin-left:2px}
+.vc-play svg{width:16px;height:16px;margin-inline-start:2px}
+/* onboarding videos: poster + play button, swapped for the Vimeo player on click (form.js) */
+.videos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.video{margin:0;min-width:0}
+.vp{position:relative;aspect-ratio:16/9;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--night-line);background:radial-gradient(120% 100% at 90% 0%,rgba(251,170,25,.30),transparent 55%),var(--night-2)}
+.vp-btn{appearance:none;-webkit-appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer;display:block}
+.vp-btn:focus-visible{outline:3px solid var(--amber);outline-offset:-3px}
+.vp-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.vp-btn:hover .vp-poster{transform:scale(1.03)}
+.vp-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(15,13,12,.35));pointer-events:none}
+.vp-play{position:absolute;z-index:1;left:50%;top:50%;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;background:var(--amber);color:var(--ink);display:grid;place-items:center;box-shadow:0 10px 28px rgba(0,0,0,.4);transition:transform .2s,background-color .2s}
+.vp-play svg{width:24px;height:24px;margin-left:3px}
+.vp-btn:hover .vp-play,.vp-btn:focus-visible .vp-play{transform:scale(1.08);background:var(--amber-hover)}
+.vp-noposter .vp-play{top:42%}
+.vp-text{position:absolute;z-index:1;left:18px;right:18px;bottom:16px;font-family:var(--serif);font-size:clamp(17px,1.7vw,21px);line-height:1.2;color:#fff;text-align:start}
+.vp iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.video figcaption{display:flex;gap:10px;align-items:baseline;margin-top:11px;font-size:14.5px;line-height:1.4;color:var(--night-text)}
+.vp-n{flex-shrink:0;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--amber)}
+@media (max-width:820px){
+  .videos{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);margin:0 calc(-1 * var(--gutter));padding:0 var(--gutter) 4px;scrollbar-width:none}
+  .videos::-webkit-scrollbar{display:none}
+  .video{flex:0 0 84%;scroll-snap-align:start}
+  .vp-play{width:52px;height:52px;margin:-26px 0 0 -26px}
+}
 
 .form-wrap{padding:40px 0 96px}
 .form-grid{display:grid;grid-template-columns:240px minmax(0,1fr);gap:40px;align-items:start}
@@ -51,15 +76,29 @@
 .form-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(22px,4vw,44px)}
 .req-legend{font-size:13.5px;color:var(--muted);margin:0 0 18px}
 .req{color:#c2410c}
-.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.hp{position:absolute;inset-inline-start:-10000px;width:1px;height:1px;overflow:hidden}
 .fstep[hidden]{display:none}
 .step-count{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .step-title{font-family:var(--serif);font-weight:500;font-size:clamp(28px,4vw,40px);line-height:1.1;margin:0 0 10px;outline:none}
 .step-desc{color:var(--ink-2);max-width:68ch;margin:0 0 6px}
 .step-desc a,.f-help a{color:var(--amber-ink)}
-.step-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 20px;margin-top:26px}
+.step-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px;row-gap:0;margin:26px 0 -22px}
+.step-fields > .field,.step-fields > .photo-row,.step-fields > .ctx-list{margin-bottom:22px}
 @media (max-width:640px){.step-fields{grid-template-columns:1fr}}
 .step-fields > fieldset.field,.step-fields > .photo-field,.step-fields > .field:has(textarea),.step-fields > .ctx-list{grid-column:1/-1}
+/* Chinese/Arabic forms: the same answer in the native script and in Latin letters, side by side */
+.field-pair{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px;row-gap:0;padding:16px;margin:0 -16px 22px;border-radius:12px;background:var(--cream)}
+.step-fields > .field-pair > .field{margin-bottom:0}
+.field-pair[hidden]{display:none}
+[dir="rtl"] .field[data-latin] .input{direction:ltr;text-align:right}
+@media (max-width:640px){.field-pair{grid-template-columns:1fr}.field-pair > .field + .field{margin-top:18px}}
+/* Text fields side by side share row tracks (label / help / input / error), so inputs line up even when
+   one label or help text wraps to more lines than its neighbour. */
+.step-fields > .field:has(> .input),.field-pair > .field{display:grid;grid-template-rows:subgrid;grid-row:span 4;align-content:start}
+.field > .f-label{grid-row:1}
+.field > .f-help{grid-row:2}
+.field > .input{grid-row:3;align-self:start}
+.field > .f-err{grid-row:4}
 
 /* Fields */
 .field{min-width:0;margin:0;padding:0;border:0}
@@ -97,7 +136,7 @@ textarea.input{resize:vertical;min-height:110px;line-height:1.5}
 .ctx-group{border:1.5px solid var(--line);border-radius:12px;background:#fff}
 .ctx-group summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;font-weight:600;font-size:15.5px}
 .ctx-group summary::-webkit-details-marker{display:none}
-.ctx-group summary::after{content:"";flex-shrink:0;width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translateY(-3px);transition:transform .2s;margin-left:4px}
+.ctx-group summary::after{content:"";flex-shrink:0;width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translateY(-3px);transition:transform .2s;margin-inline-start:4px}
 .ctx-group[open] summary::after{transform:rotate(225deg) translateY(-2px)}
 .ctx-name{flex:1}
 .ctx-count{font-family:var(--mono);font-size:11.5px;font-weight:400;letter-spacing:.04em;color:var(--muted);white-space:nowrap}
@@ -134,7 +173,7 @@ textarea.input{resize:vertical;min-height:110px;line-height:1.5}
 .form-alert[hidden]{display:none}
 .form-alert a{color:inherit;font-weight:600}
 .form-actions{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:30px;padding-top:22px;border-top:1px solid var(--line)}
-.form-actions [data-next],.form-actions [data-submit]{margin-left:auto}
+.form-actions [data-next],.form-actions [data-submit]{margin-inline-start:auto}
 .form-actions [hidden]{display:none}
 .btn-ghost-dark{--bg:transparent;--fg:var(--ink);border-color:var(--line)}
 .btn-ghost-dark:hover{background:var(--cream);border-color:#d8ccb9}
