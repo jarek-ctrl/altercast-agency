@@ -118,6 +118,7 @@
       var conditionalReq = !!field.closest('[data-show-if="photo-link"]') || field.getAttribute('data-show-if') === 'photo-link';
       if ((req || conditionalReq) && !v) msg = conditionalReq && !req ? ui.link_required : ui.required;
       else if (v && inp.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) msg = ui.invalid_email;
+      else if (v && field.hasAttribute('data-price') && !/^\d+([.,]\d{1,2})?$/.test(v.replace(/[\s\u00a0]/g, ''))) msg = ui.invalid_price;
       else if (v && field.hasAttribute('data-latin') && NON_LATIN.test(v)) msg = ui.latin_only;
     }
     setError(field, msg);
@@ -269,7 +270,7 @@
     $all('[data-q]').forEach(function (f) {
       var ty = f.getAttribute('data-ty');
       if (ty === '13') return;
-      var q = f.getAttribute('data-q');
+      var q = f.getAttribute('data-title');
       if (ty === '2') { var c = f.querySelector('input:checked'); if (c) v[q] = c.value; }
       else if (ty === '4') { var arr = $all('input:checked', f).map(function (i) { return i.value; }); if (arr.length) v[q] = arr; }
       else { var i = f.querySelector('input, textarea'); if (i && i.value) v[q] = i.value; }
@@ -277,15 +278,27 @@
     return v;
   }
   function saveDraft() {
-    try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ v: 1, step: current, values: collectValues() })); } catch (e) {}
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ v: 2, step: current, values: collectValues() })); } catch (e) {}
   }
   function saveDraftSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 400); }
   function restoreDraft() {
     var d = null;
     try { d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); } catch (e) { d = null; }
-    if (!d || !d.values || !Object.keys(d.values).length) return 0;
+    if (d && d.v === 1 && d.values) {
+      // drafts saved before the price questions were added: keyed by question number, prices were inserted after question 28
+      var conv = {};
+      Object.keys(d.values).forEach(function (q) {
+        var n = parseInt(q, 10), nq = (n > 28 ? n + 3 : n) + String(q).replace(/^\d+/, '');
+        var f = form.querySelector('[data-q="' + nq + '"]');
+        if (f) conv[f.getAttribute('data-title')] = d.values[q];
+      });
+      d = { v: 2, step: d.step, values: conv };
+    }
+    if (!d || d.v !== 2 || !d.values || !Object.keys(d.values).length) return 0;
+    var byTitle = {};
+    $all('[data-q]').forEach(function (f) { byTitle[f.getAttribute('data-title')] = f; });
     Object.keys(d.values).forEach(function (q) {
-      var f = form.querySelector('[data-q="' + q + '"]');
+      var f = byTitle[q];
       if (!f) return;
       var val = d.values[q];
       var ty = f.getAttribute('data-ty');
@@ -320,6 +333,7 @@
       if (condHidden(f)) { answers[title] = ''; return; }
       if (ty === '2') { var c = f.querySelector('input:checked'); answers[title] = c ? c.value : ''; }
       else if (ty === '4') { answers[title] = $all('input:checked', f).map(function (i) { return i.value; }); }
+      else if (f.hasAttribute('data-price')) { var pi = f.querySelector('input'); answers[title] = pi ? pi.value.replace(/[\s\u00a0]/g, '').replace(',', '.') : ''; }
       else { var i = f.querySelector('input, textarea'); answers[title] = i ? i.value.trim() : ''; }
     });
     var emailField = form.querySelector('[data-q="' + cfg.emailQ + '"] input');

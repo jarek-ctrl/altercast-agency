@@ -247,7 +247,8 @@ html:is([lang="ru"],[lang="uk"]) .h1{font-size:clamp(40px,6.6vw,80px)}
 .bar .b-agency-net{background:var(--ink);color:#fff}
 .bar .b-you{background:var(--amber);color:var(--ink);font-weight:700}
 .bar .b-agency{background:#3a342f;color:#fff}
-.split-arrow{display:flex;justify-content:flex-end;padding-inline-end:12%;color:var(--muted);margin:-8px 0 6px}
+.split-arrow{display:flex;justify-content:flex-start;padding-inline-start:calc(40% - 11px);color:var(--muted);margin:-8px 0 6px}
+.split-ex{font-family:var(--mono);font-size:12.5px;color:var(--muted);white-space:nowrap;unicode-bidi:isolate}
 .split-arrow svg{width:22px;height:22px}
 .big-num{font-family:var(--serif);font-size:clamp(80px,12vw,150px);line-height:1;color:var(--ink);letter-spacing:-.03em}
 .big-num em{font-style:italic;color:var(--amber-ink)}

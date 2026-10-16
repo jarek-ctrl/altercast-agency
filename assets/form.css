@@ -95,6 +95,7 @@
 /* Text fields side by side share row tracks (label / help / input / error), so inputs line up even when
    one label or help text wraps to more lines than its neighbour. */
 .step-fields > .field:has(> .input),.field-pair > .field{display:grid;grid-template-rows:subgrid;grid-row:span 4;align-content:start}
+.form-card [hidden]{display:none !important} /* conditional fields (company, photo link, prices) must stay hidden despite the grid rule above */
 .field > .f-label{grid-row:1}
 .field > .f-help{grid-row:2}
 .field > .input{grid-row:3;align-self:start}
