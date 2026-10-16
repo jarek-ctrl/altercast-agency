@@ -88,7 +88,7 @@
     var dismissed = false;
     try { dismissed = sessionStorage.getItem('ac-lang-hint') === '1'; } catch (e) {}
     var prefs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']).map(function (l) { return String(l).toLowerCase().slice(0, 2); });
-    var map = { pl: 'pl', en: 'en', ru: 'ru', be: 'ru', kk: 'ru', ky: 'ru', uz: 'ru', tg: 'ru', hy: 'ru', az: 'ru', ka: 'ru', uk: 'en', zh: 'zh', ar: 'ar' };
+    var map = { pl: 'pl', en: 'en', ru: 'ru', be: 'ru', kk: 'ru', ky: 'ru', uz: 'ru', tg: 'ru', hy: 'ru', az: 'ru', ka: 'ru', uk: 'ua', zh: 'zh', ar: 'ar' };
     var target = null;
     for (var i = 0; i < prefs.length; i++) {
       if (map[prefs[i]]) { target = map[prefs[i]]; break; }
