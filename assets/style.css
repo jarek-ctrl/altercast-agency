@@ -349,3 +349,23 @@ html:is([lang="zh-Hans"],[lang="ar"]) :is(.eyebrow,.badge,.region-label,.chip-gr
 [dir="rtl"] .arr{display:inline-block;transform:scaleX(-1)}
 [dir="rtl"] .btn:hover .arr{transform:scaleX(-1) translateX(3px)}
 [dir="rtl"] :is(input[type=email],input[type=url],input[type=tel]){direction:ltr;text-align:right}
+
+/* ---------- Dla firm (licencje z fakturą VAT) ---------- */
+.firm-ctas{display:flex;flex-wrap:wrap;gap:12px}
+.firm-extra{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:36px}
+.firm-extra > *{min-width:0}
+.firm-example,.firm-mail{border-radius:var(--radius);padding:clamp(22px,3vw,30px)}
+.firm-example{background:var(--amber-soft);border:1px solid #f0d49c}
+.firm-mail{background:var(--paper);border:1px solid var(--line)}
+.firm-k{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#7a4700;margin:0 0 14px}
+.firm-calc{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+.firm-calc .fc-l{display:block;font-size:13.5px;color:var(--muted)}
+.firm-calc .fc-v{display:block;font-size:26px;font-weight:600;color:var(--ink);white-space:nowrap}
+.firm-calc .fc-v small{font-size:14px;font-weight:400;color:var(--muted)}
+.firm-calc > svg{width:26px;height:26px;color:#a86200;flex-shrink:0}
+.firm-mail h3{font-family:var(--sans);font-size:17px;font-weight:600;margin:0 0 8px}
+.firm-mail p{margin:0 0 8px;color:var(--ink-2)}
+.firm-mail a,.step p a{color:#7a4700}
+.firm-mail ul{list-style:disc;padding-inline-start:20px;color:var(--ink-2);display:grid;gap:4px}
+@media (max-width:860px){.firm-extra{grid-template-columns:1fr}}
+[dir="rtl"] .firm-calc > svg{transform:scaleX(-1)}
