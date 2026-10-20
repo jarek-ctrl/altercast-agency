@@ -19,11 +19,10 @@
     profile: 'Wklej link do co najmniej jednego profilu na altercast.ai.',
     profileBad: 'To nie wygląda na link do profilu na altercast.ai.',
     fix: 'Uzupełnij zaznaczone pola, żeby wysłać zgłoszenie.',
-    fail: 'Nie udało się wysłać zgłoszenia. Sprawdź połączenie i spróbuj ponownie albo',
-    failMail: 'wyślij je mailem',
-    sending: 'Wysyłam…',
-    copied: 'Skopiowano. Wklej treść do nowej wiadomości na adres ' + MAIL + '.',
-    copyFail: 'Nie udało się skopiować. Zaznacz tekst i skopiuj go ręcznie.'
+    fail: 'Nie udało się wysłać zgłoszenia. Sprawdź połączenie z internetem i spróbuj ponownie.',
+    retry: 'Spróbuj ponownie',
+    offline: 'Formularz jest chwilowo niedostępny. Napisz do nas: ' + MAIL + '.',
+    sending: 'Wysyłam…'
   };
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   var PROFILE_RE = /^https?:\/\/([a-z0-9-]+\.)*altercast\.ai(\/|$)/i;
@@ -239,62 +238,16 @@
       hp: hp ? hp.value : ''
     };
   }
-  function mailText(d) {
-    var cur = d.currency || 'PLN';
-    var L = [];
-    L.push('Dzień dobry,', '', 'proszę o licencję z fakturą VAT przez AlterCast Agency.', '');
-    L.push('DANE DO FAKTURY');
-    L.push('Nazwa firmy: ' + d.company, 'NIP / VAT UE: ' + d.taxId, 'Adres: ' + d.street + ', ' + d.postal + ' ' + d.city + ', ' + d.country, 'E-mail do faktur: ' + d.invoiceEmail, '');
-    L.push('OSOBA KONTAKTOWA');
-    L.push(d.contactName, d.contactEmail + (d.phone ? ', ' + d.phone : ''), '');
-    L.push('WIZERUNKI');
-    d.profiles.forEach(function (p, i) { L.push((i + 1) + '. ' + p); });
-    L.push('');
-    L.push('ZAKRES LICENCJI');
-    L.push('Typ licencji: ' + d.licenseType, 'Pola eksploatacji: ' + d.fields.join(', '), 'Branża: ' + d.industry, 'Czas licencji: ' + d.duration);
-    if (d.startDate) L.push('Data rozpoczęcia: ' + d.startDate);
-    L.push('Waluta faktury: ' + cur);
-    if (d.platformPrice) L.push('Cena z platformy (netto): ' + d.platformPrice + ' ' + cur + (d.agencyPrice ? ' → na fakturze agencji: ' + d.agencyPrice + ' ' + cur + ' netto + VAT' : ''));
-    if (d.project) L.push('', 'PROJEKT I UWAGI', d.project);
-    L.push('', 'Zgody: ' + d.consents.join('; ') + '.');
-    return L.join('\n');
-  }
-  function mailHref(d, body) {
-    return 'mailto:' + MAIL + '?subject=' + encodeURIComponent('Licencja z fakturą VAT — ' + d.company) + '&body=' + encodeURIComponent(body);
-  }
-
   /* ---------- done states ---------- */
   var done = $('[data-done]');
-  function showDone(mode, d) {
+  function showDone(d) {
     form.hidden = true;
     var note = $('[data-prefill-note]'); if (note) note.hidden = true;
-    $('[data-done-api]', done).hidden = mode !== 'api';
-    $('[data-done-mail]', done).hidden = mode !== 'mail';
-    if (mode === 'api') $('[data-done-email]', done).textContent = d.invoiceEmail;
+    $('[data-done-email]', done).textContent = d.invoiceEmail;
     done.hidden = false;
     window.scrollTo({ top: done.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' });
     setTimeout(function () { done.focus({ preventScroll: true }); }, 300);
   }
-  function mailFallback(d) {
-    var body = mailText(d);
-    var href = mailHref(d, body);
-    $('#mail-copy').value = body;
-    $('[data-mail-open]').setAttribute('href', href);
-    showDone('mail', d);
-    try { window.location.href = href; } catch (e) {}
-  }
-  $('[data-mail-copy]').addEventListener('click', function () {
-    var ta = $('#mail-copy');
-    var status = $('[data-copied]');
-    function ok() { status.textContent = MSG.copied; }
-    function legacy() {
-      ta.focus(); ta.select();
-      try { document.execCommand('copy') ? ok() : (status.textContent = MSG.copyFail); } catch (e) { status.textContent = MSG.copyFail; }
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(ok, legacy);
-    else legacy();
-  });
-
   /* ---------- submit ---------- */
   var btn = $('[data-submit]', form);
   var btnLabel = btn.innerHTML;
@@ -311,7 +264,7 @@
       return;
     }
     var d = payload();
-    if (!cfg.endpoint) { mailFallback(d); return; }
+    if (!cfg.endpoint) { showAlert(MSG.offline); return; }
     btn.disabled = true;
     btn.textContent = MSG.sending;
     var controller = window.AbortController ? new AbortController() : null;
@@ -326,14 +279,14 @@
     }).then(function (r) { return r.json(); }).then(function (res) {
       clearTimeout(timer);
       if (!res || !res.ok) throw new Error((res && res.error) || 'error');
-      showDone('api', d);
+      showDone(d);
     }).catch(function () {
       clearTimeout(timer);
       btn.disabled = false;
       btn.innerHTML = btnLabel;
-      showAlert(MSG.fail + ' <a href="#" data-alert-mail>' + MSG.failMail + '</a>.');
-      var a = $('[data-alert-mail]', alertBox);
-      if (a) a.addEventListener('click', function (ev) { ev.preventDefault(); mailFallback(d); });
+      showAlert(MSG.fail + ' <button type="button" class="link-btn" data-retry>' + MSG.retry + '</button>');
+      var r = $('[data-retry]', alertBox);
+      if (r) r.addEventListener('click', function () { if (form.requestSubmit) form.requestSubmit(btn); else btn.click(); });
     });
   });
 })();
